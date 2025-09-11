@@ -1,0 +1,163 @@
+#include <stdio.h>
+#include <string.h> // 1. двумерный массив с выделением памяти и очищение
+#include <stdlib.h> // 2. случ числа от -30 до 15 (массив) и найти все неотрицательные элементы
+#include <time.h> // 3. односвязный список и 5 задание - добавление и удаление студентов
+#include <windows.h> 
+#define ROW 10
+#define COL 10
+#define _CRT_SECURE_NO_WARNINGS
+#define MAX_SIZE 100  
+#define NAME_LENGTH 20
+
+struct Student {
+    char first_name[NAME_LENGTH];
+    char last_name[NAME_LENGTH];
+};
+
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    srand(time(NULL));
+    printf("Задания 1 и 2\n"); // случ числа от -30 до 15 (массив) и найти все неотрицательные элементы
+    printf("Случайный массив (числа от -30 до 15):\n");
+    int dif, min, max, mas[COL][ROW];
+
+    for (int i = 0; i < COL; i++) {
+        for (int j = 0; j < ROW; j++) {
+            mas[i][j] = (rand() % 46) - 30; 
+            if (i == 0 && j == 0) {
+                min = mas[i][j];
+                max = mas[i][j];
+            }
+            else {
+                if (mas[i][j] < min) {
+                    min = mas[i][j];
+                }
+                else if (mas[i][j] > max) {
+                    max = mas[i][j];
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < COL; i++) {
+        for (int j = 0; j < ROW; j++) {
+            printf("%d\t", mas[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("min = %d, max = %d, min - max = %d\n", min, max, min - max);
+
+    printf("Неотрицательные элементы массива:\n");
+    for (int i = 0; i < COL; i++) {
+        for (int j = 0; j < ROW; j++) {
+            if (mas[i][j] >= 0) {
+                printf("%d ", mas[i][j]);
+            }
+        }
+    }
+    printf("\n");
+    printf("Задания 3 и 4\n");
+    int rows, cols;
+    char direction;
+    int array[MAX_SIZE][MAX_SIZE];
+
+    printf("Введите количество строк (не более %d): ", MAX_SIZE);
+    scanf_s("%d", &rows);
+    printf("Введите количество столбцов (не более %d): ", MAX_SIZE);
+    scanf_s("%d", &cols);
+
+    if (rows <= 0 || rows > MAX_SIZE || cols <= 0 || cols > MAX_SIZE) {
+        printf("Неверные размеры массива!\n");
+        return 1;
+    }
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            array[i][j] = rand() % 10;
+        }
+    }
+
+    printf("\nMассив:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%d\t", array[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\nВведите 'r' для суммирования по строкам или 'c' для столбцов: ");
+    scanf_s(" %c", &direction);
+
+    if (direction == 'r' || direction == 'R') {
+        printf("\nСуммы по строкам:\n");
+        for (int i = 0; i < rows; i++) {
+            int rowSum = 0;
+            for (int j = 0; j < cols; j++) {
+                rowSum += array[i][j];
+            }
+            printf("Строка %d: %d\n", i, rowSum);
+        }
+    }
+    else if (direction == 'c' || direction == 'C') {
+        printf("\nСуммы по столбцам:\n");
+        for (int j = 0; j < cols; j++) {
+            int colSum = 0;
+            for (int i = 0; i < rows; i++) {
+                colSum += array[i][j];
+            }
+            printf("Столбец %d: %d\n", j, colSum);
+        }
+    }
+    else {
+        printf("Неверный выбор направления!\n");
+    }
+
+    printf("Задание 5\n");
+    struct Student students[] = {
+        {"Яросолав", "Макаров"},
+        {"Денис", "Бегичев"},
+        {"Кирилл", "Родионов"},
+        {"Мария", "Сидорова"},
+        {"Анна", "Иванова"},
+        {"Сергей", "Смирнов"},
+        {"Ольга", "Кузнецова"},
+        {"Дмитрий", "Попов"}
+    };
+
+    int student_count = sizeof(students) / sizeof(students[0]);
+    printf("Список студентов:\n");
+
+    for (int i = 0; i < student_count; i++) {
+        printf("%d. %s %s\n", i + 1, students[i].first_name, students[i].last_name);
+    }
+
+    char search[NAME_LENGTH];
+    printf("\nВведите имя или фамилию для поиска: ");
+    getchar();
+    fgets(search, NAME_LENGTH, stdin);
+    search[strcspn(search, "\n")] = '\0';
+
+    printf("\nРезультаты поиска для '%s':\n", search);
+    int found = 0;
+
+    for (int i = 0; i < student_count; i++) {
+
+
+        if (strcmp(students[i].first_name, search) == 0 ||
+            strcmp(students[i].last_name, search) == 0) {
+            printf("- %s %s\n", students[i].first_name, students[i].last_name);
+            found++;
+        }
+    }
+
+    if (found == 0) {
+        printf("Студенты не найдены.\n");
+    }
+    else {
+        printf("Найдено: %d студент(ов)\n", found);
+    }
+
+    return 0;
+}
