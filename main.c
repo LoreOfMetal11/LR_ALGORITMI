@@ -102,7 +102,7 @@ int main() {
     int* petlya_inc = calloc(VERSHINY, sizeof(int));
     int max_stepen_inc = 0;
 
-    // инцендентность
+    // инциндентность
 
     for (int i = 0; i < VERSHINY; i++) {
         int deg = 0, loops = 0;
@@ -150,3 +150,4 @@ int main() {
     free(petlya_inc);
     return 0;
 }
+
